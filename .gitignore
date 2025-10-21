@@ -1,0 +1,23 @@
+# Ignore CSV files
+*.csv
+
+# Ignore Excel files
+*.xlsx
+
+# Ignore specific Python files
+sample.py
+samplee.py
+google_test.py
+main.py
+
+# Common Python ignores
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.env
+.env
+.venv/
+venv/
+.idea/
+.DS_Store
