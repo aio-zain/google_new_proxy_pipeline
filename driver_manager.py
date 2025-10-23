@@ -82,7 +82,7 @@ def init_driver(url):
             version_main=141
         )
         driver.maximize_window()
-
+        time.sleep(random.uniform(1.5, 2.5))
         # quick smoke test
         try:
             driver.get(url)

@@ -10,7 +10,7 @@ import query_generator as que_gen
 INPUT_FILE = "data\\df_san_jose_final 1.xlsx"
 OUTPUT_FILE = "output\\san_jose_output.csv"
 
-RESTART_DRIVER_EVERY = 10  # restart driver after this many successful processed restaurants
+RESTART_DRIVER_EVERY = 13  # restart driver after this many successful processed restaurants
 
 def main():
     driver = None
@@ -55,7 +55,7 @@ def main():
                 print("at start")
                 driver = get_new_driver_with_retries(one_time_queries)
 
-            base_results = perform_all_searches(driver, title, address, delay_between=2)
+            base_results, driver = perform_all_searches(driver, title, address, delay_between=2)
 
             if base_results:
                 # 4) Send owner_info to API using your fun_send_to_api method
@@ -107,13 +107,13 @@ def main():
                         print("❌ Failed to save row (no owner names)")
 
                 # 6) After each processed restaurant, rotate driver every RESTART_DRIVER_EVERY iterations
-                if processed_count and (processed_count % RESTART_DRIVER_EVERY == 0):
-                    print(f"♻️ Restarting driver after {processed_count} processed restaurants.")
-                    try:
-                        driver.quit()
-                    except Exception:
-                        pass
-                    driver = get_new_driver_with_retries(one_time_queries)
+                # if processed_count and (processed_count % RESTART_DRIVER_EVERY == 0):
+                #     print(f"♻️ Restarting driver after {processed_count} processed restaurants.")
+                #     try:
+                #         driver.quit()
+                #     except Exception:
+                #         pass
+                #     driver = get_new_driver_with_retries(one_time_queries)
 
                 time.sleep(1)
 

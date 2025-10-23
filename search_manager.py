@@ -11,21 +11,33 @@ def perform_all_searches(driver, title, address, delay_between=2):
     record = {}
     for idx, url in enumerate(urls):
         try:
+            print("Working on tab:", tab_names[idx])
             try:
-                if url == driver.current_url:
-                    print("OK | Found the same franchise restaurant")
-                    pass
-                else:
-                    print("NOT OK | NOT Found the same Link")
+                try:
                     driver.get(url)
+                    print("got the link 1")
+                except Exception as e:
+                    print("unable to get link 1")
+                    try:
+                        driver.quit()
+                        print("Quiting driver 1")
+                    except:
+                        print("unable to quit driver 1")
+                        pass
+                    print("starting new drive 1r")
+                    driver = dm.get_new_driver_with_retries(urls)
+                    driver.get(url)
+                    print("new driver 1")
                 check = dm.fun_check_captcha(driver)
                 if not check:
                     print("----------- C A P T C H A   F O U N D ---------")
                     try:
                         driver.quit()
+                        print("Closing driver after captcha found 1")
                     except:
                         pass
                     try:
+                        print("trying new driver after captcha found 1")
                         driver = dm.get_new_driver_with_retries(urls)
                     except Exception as e:
                         print("Some problem in creating new driver in perform_all_searches", e)
@@ -39,11 +51,14 @@ def perform_all_searches(driver, title, address, delay_between=2):
                 record[tab_names[idx]] = res
             except:
                 try:
+                    print("Quiting driver 2")
                     driver.quit()
+                    print("driver 2 closed")
                 except:
                     pass
                 try:
-                    dm.get_new_driver_with_retries(urls)
+                    print("trying new driver after captcha found 2")
+                    driver = dm.get_new_driver_with_retries(urls)
                 except Exception as e:
                     print("Some problem in creating new driver in perform_all_searches", e)
                 driver.get(url)
@@ -56,11 +71,14 @@ def perform_all_searches(driver, title, address, delay_between=2):
             print("some outer exception in perform all searches", e)
             try:
                 driver.quit()
+                print("driver quit successfully in outer exception in perform_all_searches")
+                print("trying new driver in outer exception in perform_all_searches")
+                driver = dm.get_new_driver_with_retries(urls)
             except Exception as e:
-                print("driver quit successfully in outer exception in perform_all_searches", e)
+                print("some problem in quiting driver in outer except", e)
             record = {}
 
-    return record
+    return record, driver
 
 
 def perform_owner_linkedin_search(driver, owner_name, title, delay_between=2):

@@ -9,6 +9,7 @@ sample.py
 samplee.py
 google_test.py
 main.py
+save_cookies.py
 
 # Common Python ignores
 __pycache__/
